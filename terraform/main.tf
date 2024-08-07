@@ -22,8 +22,13 @@ module "aks" {
   rg_name = module.resource_group.rg_name
   rg_location = module.resource_group.rg_location
   vnet_subnet1_id = module.vnet.subnet1_id
-  depends_on = [ module.vnet ]
   appId = var.appId
   password = var.password
   random_integer = module.resource_group.random_integer
+  depends_on = [ module.vnet ]
+}
+
+module "helm" {
+  source = "./modules/helm"
+  depends_on = [ module.aks ]
 }

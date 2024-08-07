@@ -4,6 +4,11 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "= 3.70.0"
     }
+
+    helm = {
+      source  = "hashicorp/helm"
+      version = "= 2.12.1"
+    }
   }
 
   backend "azurerm" {
@@ -22,6 +27,11 @@ provider "azurerm" {
 
 provider "random" {} 
 
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"  # path to kubeconfig file
+  }
+}
 
 
 
