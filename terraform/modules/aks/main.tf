@@ -7,11 +7,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name            = "default"
-    node_count      = 2
-    vm_size         = "Standard_b2ps_v2"
+    node_count      = 1
+    vm_size         = "Standard_B2ms"
     os_disk_size_gb = 50
     enable_node_public_ip = true
-    temporary_name_for_rotation = "tempdefault"
+    temporary_name_for_rotation = "tempdefault" 
   }
 
   service_principal {

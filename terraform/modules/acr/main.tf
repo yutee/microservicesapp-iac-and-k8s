@@ -1,5 +1,5 @@
 resource "azurerm_container_registry" "acr" {
-  name                = "capstonesregistry43"
+  name                = "capstonesregistry${var.random_integer}"
   resource_group_name = var.rg_name
   location            = var.rg_location
   sku                 = "Basic"
