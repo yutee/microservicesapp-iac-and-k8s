@@ -18,10 +18,10 @@ Below is an overview of the complete workflow:
 ## The Process
 ### Prerequisites
 Should you want to recreate the process using the code provided on this repo, these are things you will need to setup first:
-- Helm
 - Az CLI (configured to an active azure subscription)
-- Kubectl
-- Terraform
+- Helm installed
+- Kubectl installed
+- Terraform installed
 
 Project Folder setup:
     ![folder structure]()
@@ -53,18 +53,39 @@ Locate the deployment file(s) that in the [kubernetes](./kubernetes/) directory 
      Ingress allows you to define rules for how external traffic should be directed to your services, enabling you to expose your applications to the internet or other networks. The ingress configuration is can be found in the oroject folder, configure and apply. Rememember to map your ingress IP address on your DNS service provider. If successful, the application should be up and available via the domain name.
         ![screenshot](./images/app-using-domain-notls.png)
 
-__Logging, Monitoring, Alerting__
+__Logging, Monitoring & Alerts__
 - Setup prometheus and grafana
     Prometheus is used in a cluster to get metrics on the state of the cluster and the apllication running on it. It can be configured and different set of metrics queried from it. Grafana can also be used to to monitor the state of your cluster and application, it get metrics from prometheus and displays it in a visually appealling form.
-    These are already installed in the cluster. You have to configure the them and reteive the data ypu need to be displayed using grafana tho. Access the grafan webpage to build a dashboard using metrics from prometheus.
+    These are already installed in the cluster. You have to configure the them and reteive the data ypu need to be displayed using grafana tho. Access the grafana webpage to build a dashboard using metrics from prometheus.
         ![screenshot](./images/prom.png)
         ![screenshot](./images/grafana.png)
     It is also ideal to define the prometheus and grafana endpoints using ingress so they can be accessible using the domain name.
         ![screenshot](./images/ingress-describe.png)
 
-- Setup alert
-    Alert manager is part of the prometheus stack that was installed. It also uses metrics provided by prometheus.
-        ![screenshot]()
+- Monitoring
+    -install prom
+    -apply files `kubectl apply $(ls *-prometheus-*.yaml | awk ' { print " -f " $1 } ')`
+    -Prometheus has configurations to scrape all k8s pods (the service pods expose a metrcis endpoint), connected to local alertmanager.
+    -ensure it is running
+    -install grafana and apply the files. these files contains ock-shop grafana dashboards.
+    -also ensure to apply `kubectl apply -f 23-grafana-import-dash-batch.yaml` once the grafana pod is running
+    -then visit the grafana using either port-forwarding, expose or ingress to view your dashboard
+
+- Discovery
+    Prometheus & Grafana
+    While you would normally have to install prometheus using helm and setup alert rules or import dashboards on grafana. FOr this project, manisfest files have been provided, these files contain configmaps, doployments and services for prometheus and grafana. find deatailed steps to install them [here](https://github.com/microservices-demo/microservices-demo/tree/master/deploy/kubernetes/manifests-monitoring). So get the files and apply them in a monitoirng namespaces. This will create a namspace, cluster role bindings, install prometheus and grafana from there respective docker images. The prometheus comes with rules that scrape metrics endpoints exposed by the application pods. It also has one alert rule configured. This alert rule, if fired, can be sent as a notification to a custom slack channel or email using alert manager which we will setup next. After installation, you can use either of the three methods to acccess the UI on your web browser. Portforwarding, Exposing and Ingress. I used an ingress and you can find the configuration file [file]() here.
+        ![screenshot](./images/prom.png)
+        ![screenshot](./images/prom-alertrule.png)
+        ![screenshot](./images/graf1.png)
+        ![screenshot](./images/graf2.png)
+        dashboard showing uptime of cluster and usage. also shows pods that went down within the period.
+
+    Alert Manager:
+    Alerting with Prometheus is separated into two parts. Alerting rules in Prometheus servers send alerts to an Alertmanager. The Alertmanager then manages those alerts, including silencing, inhibition, aggregation and sending out notifications via methods such as email, on-call notification systems, and chat platforms like slack. Here notification will be sent to slack.The main steps to setting up alerting and notifications are:
+    - Setup and configure the Alertmanager
+    - Configure Prometheus to talk to the Alertmanager
+    - Create alerting rules in Prometheus
+
 
 __TLS certificate__
     Encrypting data gotten from user requests to a web application is no longer a requirment, it is a necessity, users genraally feel safe when they visit webapps that are properly encrypted. 

@@ -24,23 +24,3 @@ spec:
                 name: front-end
                 port:
                   number: 80
-    - host: prometheus.utibeokon.me
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: prom-kube-prometheus-stack-prometheus
-                port:
-                  number: 9090
-    - host: grafana.utibeokon.me
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: prom-grafana
-                port:
-                  number: 80
