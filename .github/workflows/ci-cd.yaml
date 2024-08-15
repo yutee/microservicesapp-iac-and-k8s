@@ -21,11 +21,7 @@ jobs:
                 sudo mv kubeval /usr/local/bin/kubeval
 
         -   name: Validate Kubernetes manifests
-            run: |
-              for file in kubernetes/*.yaml; do
-                kubeval --ignore-missing-schemas "$file"
-              done
-              kubeval kubernetes/*.yaml
+            run: kubeval --ignore-missing-schemas kubernetes/*.yaml
 
     # deploys or updates the infrastructure using Terraform, ignores if theee was no change to infrastructure configuration
     Infrastructure:
