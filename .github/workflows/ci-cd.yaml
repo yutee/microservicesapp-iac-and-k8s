@@ -136,5 +136,5 @@ jobs:
         
         -   name: Deploy to Kubernetes
             run: |
-                kubectl apply -f kubernetes/*.yaml
-                kubectl apply -f kubernetes/sock-shop-monitoring/*.yaml
+              ls kubernetes/*.yaml | xargs -n 1 kubectl apply -f
+              ls kubernetes/sock-shop-monitoring/*.yaml | xargs -n 1 kubectl apply -f
