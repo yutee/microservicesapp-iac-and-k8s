@@ -22,7 +22,7 @@ jobs:
 
         -   name: Validate Kubernetes manifests
             run: |
-              for file in path/to/files/*.yaml; do
+              for file in kubernetes/*.yaml; do
                 kubeval --ignore-missing-schemas "$file"
               done
               kubeval kubernetes/*.yaml
