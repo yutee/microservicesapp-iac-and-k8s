@@ -1,4 +1,4 @@
-name: microservices pipeline
+name: Deploy to Azure Kubernetes Service
 on:
     push:
         branches: [ main ]
@@ -6,7 +6,7 @@ on:
             - 'terraform/**'  # Listens for changes in the 'terraform' folder
             - 'kubernetes/*.yaml'  # Listens for changes in the 'kubernetes' folder
             - 'kubernetes/sock-shop-monitoring/**'  # Listens for changes in the 'kubernetes/sock-shop-monitoring' folder
-    workflow_dispatch:
+    # workflow_dispatch:
 
 jobs:
     # validates the format and correcttness of the Kubernetes manifests
