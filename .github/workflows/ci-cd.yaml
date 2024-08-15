@@ -30,10 +30,20 @@ jobs:
         -   name: Checkout code
             uses: actions/checkout@v3
 
-        -   name: 'Login to Azure'
-            uses: azure/login@v1
-            with:
-              creds: ${{ secrets.AZURE_CREDENTIALS }}
+        -   name: Install Azure CLI
+            run: |
+              curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      
+        -   name: Set up Azure CLI Authentication
+            run: |
+              AZURE_CREDENTIALS_JSON='${{ secrets.AZURE_CREDENTIALS }}'
+              echo $AZURE_CREDENTIALS_JSON > azure_credentials.json
+              az login --service-principal -u $(jq -r '.clientId' azure_credentials.json) -p $(jq -r '.clientSecret' azure_credentials.json) --tenant $(jq -r '.tenantId' azure_credentials.json)
+        
+      
+        -   name: Set subscription
+            run: |
+              az account set --subscription $(jq -r '.subscriptionId' azure_credentials.json)
       
         -   name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
