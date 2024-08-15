@@ -29,21 +29,6 @@ jobs:
         steps:
         -   name: Checkout code
             uses: actions/checkout@v3
-
-        -   name: Install Azure CLI
-            run: |
-              curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      
-        -   name: Set up Azure CLI Authentication
-            run: |
-              AZURE_CREDENTIALS_JSON='${{ secrets.AZURE_CREDENTIALS }}'
-              echo $AZURE_CREDENTIALS_JSON > azure_credentials.json
-              az login --service-principal -u $(jq -r '.clientId' azure_credentials.json) -p $(jq -r '.clientSecret' azure_credentials.json) --tenant $(jq -r '.tenantId' azure_credentials.json)
-        
-      
-        -   name: Set subscription
-            run: |
-              az account set --subscription $(jq -r '.subscriptionId' azure_credentials.json)
       
         -   name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
@@ -62,14 +47,15 @@ jobs:
         -   name: Terraform Plan
             id: tf_plan
             working-directory: ./terraform
-            run: |
-              terraform plan -detailed-exitcode -out=plan.tfplan
-              echo "exit_code=$?" >> $GITHUB_ENV
             env:
               ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
               ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
               ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
               ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+            run: |
+              terraform plan -detailed-exitcode -out=plan.tfplan
+              echo "exit_code=$?" >> $GITHUB_ENV
+              echo $ARM_CLIENT_ID
 
         -   name: Check Plan Status
             id: check_plan_status
