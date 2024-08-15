@@ -17,10 +17,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
   }
 
-  service_principal {
-    client_id     = var.appId
-    client_secret = var.password
+  identity {
+    type = "SystemAssigned"
   }
+
+  # service_principal {
+  #   client_id     = var.appId
+  #   client_secret = var.password
+  # }
 
   role_based_access_control_enabled = true
 
