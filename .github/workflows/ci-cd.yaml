@@ -30,6 +30,13 @@ jobs:
         -   name: Checkout code
             uses: actions/checkout@v3
 
+        -   name: Set up Azure Credentials
+            run: |
+              echo "ARM_CLIENT_ID=${{ secrets.AZURE_CREDENTIALS.clientId }}" >> $GITHUB_ENV
+              echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_CREDENTIALS.clientSecret }}" >> $GITHUB_ENV
+              echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_CREDENTIALS.subscriptionId }}" >> $GITHUB_ENV
+              echo "ARM_TENANT_ID=${{ secrets.AZURE_CREDENTIALS.tenantId }}" >> $GITHUB_ENV
+
         -   name: Azure Login
             uses: azure/login@v2
             with:
