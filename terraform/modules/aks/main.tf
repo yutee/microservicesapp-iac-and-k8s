@@ -12,6 +12,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_disk_size_gb = 50
     enable_node_public_ip = true
     temporary_name_for_rotation = "tempdefault" 
+    upgrade_settings {
+      max_surge       = "10%"
+    }
   }
 
   service_principal {
