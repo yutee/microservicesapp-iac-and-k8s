@@ -14,7 +14,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         -   name: Checkout
-            uses: actions/checkout@v2
+            uses: actions/checkout@v3
         -   name: Install Kubeval
             run: |
                 curl -sSL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar -xz
@@ -29,9 +29,12 @@ jobs:
         steps:
         -   name: Checkout code
             uses: actions/checkout@v3
+        
+        -   name: Debug Secrets
+            run: echo "${{ secrets.AZURE_CREDENTIALS }}"
 
         -   name: Azure Login
-            uses: azure/login@v1
+            uses: azure/login@v2
             with:
                 creds: ${{ secrets.AZURE_CREDENTIALS }}
       
@@ -82,7 +85,7 @@ jobs:
         needs: [Test, Infrastructure]
         steps:
         -   name: Checkout
-            uses: actions/checkout@v2
+            uses: actions/checkout@v3
 
         -   name: Setup Kubectl
             uses: azure/aks-set-context@v1
