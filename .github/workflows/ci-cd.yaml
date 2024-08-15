@@ -34,6 +34,10 @@ jobs:
             uses: azure/login@v2
             with:
                 creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+        -   name: Azure Login as User
+            run: |
+              az login --username yuteenightxi@gmail.com --password ${{ secrets.AZURE_CREDENTIALS.clientSecret }}
       
         -   name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
@@ -68,7 +72,7 @@ jobs:
         -   name: Terraform Apply
             if: steps.check_plan_status.outcome == 'success' && env.exit_code == '2'
             working-directory: ./terraform
-            run: terraform apply -auto-approve plan.tfplan
+            run: terraform apply --auto-approve plan.tfplan
 
     # deploys the application to Kubernetes cluster, this could include changes to parts of the configuration files.
     # changes like number of pods, memory, cpu, ingress, monitoring and alert configurations etc. 
