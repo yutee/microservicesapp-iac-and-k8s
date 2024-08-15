@@ -36,11 +36,6 @@ jobs:
               echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_SP.password }}" >> $GITHUB_ENV
               echo "ARM_TENANT_ID=${{ secrets.AZURE_SP.tenant }}" >> $GITHUB_ENV
               echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_CREDENTIALS.subscriptionId }}" >> $GITHUB_ENV
-
-        -   name: Azure Login
-            uses: azure/login@v2
-            with:
-                creds: ${{ secrets.AZURE_CREDENTIALS }}
       
         -   name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
