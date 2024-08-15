@@ -53,6 +53,11 @@ jobs:
         -   name: Initialize Terraform
             working-directory: ./terraform 
             run: terraform init
+            env:
+             ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+             ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+             ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+             ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       
         -   name: Terraform Plan
             id: tf_plan
@@ -60,6 +65,11 @@ jobs:
             run: |
               terraform plan -detailed-exitcode -out=plan.tfplan
               echo "exit_code=$?" >> $GITHUB_ENV
+            env:
+              ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+              ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+              ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+              ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
         -   name: Check Plan Status
             id: check_plan_status
@@ -79,6 +89,11 @@ jobs:
             if: steps.check_plan_status.outcome == 'success' && env.exit_code == '2'
             working-directory: ./terraform
             run: terraform apply --auto-approve plan.tfplan
+            env:
+                ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+                ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+                ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     # deploys the application to Kubernetes cluster, this could include changes to parts of the configuration files.
     # changes like number of pods, memory, cpu, ingress, monitoring and alert configurations etc. 
