@@ -1,13 +1,10 @@
-# Useful examples on how to configure Prometheus
-# * https://www.weave.works/prometheus-and-kubernetes-monitoring-your-applications/
-# * https://grafana.net/dashboards/162
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus-alertrules
   namespace: monitoring
 data:
-  alert.rules: |-
+  alert.rules: |
     groups:
     - name: HighErrorRate
       rules:
@@ -19,3 +16,33 @@ data:
         annotations:
           summary: "High HTTP 500 error rates"
           description: "Rate of HTTP 500 errors per 5 minutes: {{ $value }}"
+
+    # - name: TestAlert
+    #   rules:
+    #   - alert: AlwaysFiring
+    #     expr: vector(1)  # This will always fire
+    #     for: 1m
+    #     labels:
+    #       severity: warning
+    #     annotations:
+    #       summary: "This is a test alert"
+
+    # - name: MyCustomAlerts
+    #   rules:
+    #   - alert: InstanceDown
+    #     expr: up == 0
+    #     for: 1m
+    #     labels:
+    #       severity: critical
+    #     annotations:
+    #       summary: "Instance {{ $labels.instance }} is down"
+    #       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+
+    #   - alert: HighCPUUsage
+    #     expr: node_cpu_seconds_total{mode="idle"} < 20
+    #     for: 1m
+    #     labels:
+    #       severity: warning
+    #     annotations:
+    #       summary: "High CPU usage detected on {{ $labels.instance }}"
+    #       description: "CPU usage on {{ $labels.instance }} is higher than 80% for more than 10 minutes."

@@ -18,5 +18,5 @@ data:
     receivers:
     - name: 'slack-notifications'
       slack_configs:
-      - api_url: 'https://hooks.slack.com/services/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'
+      - api_url: ''
         channel: '#capstone'

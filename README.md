@@ -24,11 +24,11 @@ Should you want to recreate the process using the code provided on this repo, th
 - Terraform installed
 
 Project Folder setup:
-    ![folder structure]()
+    ![folder structure](.images/project_folder.png)
 
 ### Steps
-__Terraform__
-Terraform is an infrastructure as code tool. It is commonly used to provision infrastructure on cloud services, but there is also so much more to Terraform. The provided [terraform configuration](./terraform/main.tf) written in modules is used to create the following resources on Microsoft Azure:
+__Infrastructure__
+Setting up infrastructure for this project is done using infrastructure as code. Terraform is an iac tool commonly used to provision infrastructure that will run cloud services, terraform goes beyond just cloud services as it also supports other providers like helm. The provided [terraform configuration](./terraform/main.tf) written in modules is used to create the following resources on Microsoft Azure:
 - A resource group
 - A virtual network and two subnets
 - AKS (a managed kubernetes cluster)
@@ -53,7 +53,13 @@ Locate the deployment file(s) that in the [kubernetes](./kubernetes/) directory 
      Ingress allows you to define rules for how external traffic should be directed to your services, enabling you to expose your applications to the internet or other networks. The ingress configuration is can be found in the oroject folder, configure and apply. Rememember to map your ingress IP address on your DNS service provider. If successful, the application should be up and available via the domain name.
         ![screenshot](./images/app-using-domain-notls.png)
 
-__Logging, Monitoring & Alerts__
+__Securing HTTP Connection__
+    Encrypting data gotten from user requests to a web application is no longer a requirment, it is a necessity, users genraally feel safe when they visit webapps that are properly encrypted. 
+    Cert-manager can be installed and using the issuer file provided, a tls certificate request can be made to letsencrypt.
+        ![screenshot](./images/certificate-issued.png)
+        ![screenshot](./images/app-using-domain-yestls.png)
+
+__Logging, Monitoring & Alerting__
 - Setup prometheus and grafana
     Prometheus is used in a cluster to get metrics on the state of the cluster and the apllication running on it. It can be configured and different set of metrics queried from it. Grafana can also be used to to monitor the state of your cluster and application, it get metrics from prometheus and displays it in a visually appealling form.
     These are already installed in the cluster. You have to configure the them and reteive the data ypu need to be displayed using grafana tho. Access the grafana webpage to build a dashboard using metrics from prometheus.
@@ -87,13 +93,6 @@ __Logging, Monitoring & Alerts__
     - Create alerting rules in Prometheus
 
 
-__TLS certificate__
-    Encrypting data gotten from user requests to a web application is no longer a requirment, it is a necessity, users genraally feel safe when they visit webapps that are properly encrypted. 
-    Cert-manager can be installed and using the issuer file provided, a tls certificate request can be made to letsencrypt.
-        ![screenshot](./images/certificate-issued.png)
-        ![screenshot](./images/app-using-domain-yestls.png)
-
-
 __Github actions__
 GitHub Actions is a powerful automation tool provided by GitHub. It allows you to define custom workflows that automate various tasks in your software development process. These tasks can include building, testing, and deploying your code, as well as performing other actions like sending notifications or creating releases.
 
@@ -103,6 +102,7 @@ GitHub Actions is a powerful automation tool provided by GitHub. It allows you t
 --explain setting up the other parts-
 
 __Azure Firewall__
+To test my pipeline, i will be adding the firewal feature to my configuration.
 <details>
   <summary>Using Firewall</summary>
 
