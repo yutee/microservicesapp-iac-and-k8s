@@ -95,7 +95,7 @@ For this project, I setup a workflow that runs on every push to the repo that ho
     _a first test of the pipeline._
 
 __Azure Firewall__
-Azure firewall will be used to define certain rules to protect the infrastructure.
+Azure firewall will be used to define certain rules to protect the infrastructure resources. The main approach here is to update my runnign cluster to create an azure firewall and a firewall policy that restrict incoming traffic to the grafana service running in the cluster only a specific IP address. Changes made will then be pushed to the repo and github actions workflow starts a pipeline to implement the update. This way, my grafana dashboard is accessible by authorixed person even tho it is served over the internet.
 
 
 ## The End?
