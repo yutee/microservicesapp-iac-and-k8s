@@ -94,17 +94,18 @@ For this project, I setup a workflow that runs on every push to the repo that ho
     ![screenshot](./images/successful-pipeline.png)
     _a first test of the pipeline._
 
+    ![screenshot](./images/complete-pipeline.png)
+
 __Azure Firewall__
 Azure firewall will be used to define certain rules to protect the infrastructure resources. The main approach here is to update my runnign cluster to create an azure firewall and a firewall policy that restrict incoming traffic to the grafana service running in the cluster only a specific IP address. Changes made will then be pushed to the repo and github actions workflow starts a pipeline to implement the update. This way, my grafana dashboard is accessible by authorixed person even tho it is served over the internet.
 
 
 ## The End?
 DevOps never ends, as software is ever changing and evolving, having implemented ci/cd, continous integration of new code into existing one.
-
 I will be making certain changes to my manifest files, and I will show how the workflow picks up the change and deploys it to kubernetes and rolls out an update to our hosted application.
 
 __Continous Integration and Continous Deployment__
--show demo-
+-show ci/cd demo-
 
 __Summary__
 In this project, I successfully deployed a microservices-based application on an AKS cluster, leveraging Kubernetes for orchestration and core DevOps practices to ensure high availability. I also setup and proper monitoring system for the cluster and applications running in it. The deployment process, as well as further integrations, were fully automated using Infrasctructure as code, and futher updates have been made provision for using GitHub Actions to streamline the workflow and enable continuous integration and delivery. This approach not only enhanced the reliability and scalability of the application but also laid a solid foundation for future improvements and integrations.
