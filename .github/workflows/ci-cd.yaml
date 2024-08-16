@@ -126,3 +126,12 @@ jobs:
             run: |
               ls kubernetes/*.yaml | xargs -n 1 kubectl apply -f
               ls kubernetes/sock-shop-monitoring/*.yaml | xargs -n 1 kubectl apply -f
+
+    Verify:
+        # runs tests to verify the deployment
+        runs-on: ubuntu-latest
+        needs: [Deploy]
+        steps:
+        -   name: Test ingress url
+            run: |
+              curl 
