@@ -35,3 +35,40 @@ module "aks" {
 #   source = "./modules/helm"
 #   depends_on = [ module.aks ]
 # }
+
+
+#actions workflow
+        # -   name: Terraform Plan
+        #     id: tf_plan
+        #     working-directory: ./terraform
+        #     run: |
+        #       terraform plan -detailed-exitcode -out=plan.tfplan \
+        #       -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" \
+        #       -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
+        #       -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+        #       -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}"
+        #       echo "exit_code=$?" >> $GITHUB_ENV
+
+        # -   name: Check Plan Status
+        #     id: check_plan_status
+        #     run: |
+        #       if [ "$exit_code" -eq 0 ]; then
+        #         echo "No changes detected. Skipping apply."
+        #         exit 0
+        #       elif [ "$exit_code" -eq 2 ]; then
+        #         echo "Changes detected. Proceeding with apply."
+        #       else
+        #         echo "Error during plan. Exiting."
+        #         exit 1
+        #       fi
+        #     env:
+        #       exit_code: ${{ env.exit_code }}
+
+        # -   name: Terraform Apply
+        #     if: steps.check_plan_status.outcome == 'success' && env.exit_code == '2'
+        #     working-directory: ./terraform
+        #     run: terraform apply --auto-approve plan.tfplan \
+        #       -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" \
+        #       -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
+        #       -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+        #       -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}"
