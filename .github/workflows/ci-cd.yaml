@@ -2,7 +2,8 @@ name: Deploy to Azure Kubernetes Service
 
 on:
     push:
-        branches: [ main ]
+        branches:
+            - main
         paths:
             - 'terraform/**'  # Listens for changes in the 'terraform' folder
             - 'kubernetes/*.yaml'  # Listens for changes in the 'kubernetes' folder
@@ -126,3 +127,30 @@ jobs:
             run: |
               ls kubernetes/*.yaml | xargs -n 1 kubectl apply -f
               ls kubernetes/sock-shop-monitoring/*.yaml | xargs -n 1 kubectl apply -f
+
+    Validate:
+        # runs tests to verify the deployment
+        runs-on: ubuntu-latest
+        steps:
+        -   name: Set up kubectl
+            uses: azure/setup-kubectl@v3
+            with:
+                version: 'v1.24.0'
+
+        -   name: Authenticate with AKS
+            uses: azure/aks-set-context@v2
+            with:
+              resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+              cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+        -   name: Check if all application pods are running
+            run: |
+              kubectl get pods --namespace your-namespace -o jsonpath='{.items[*].status.phase}' | grep -v Running && exit 1 || echo "All pods are running"
+              
+
+        -   name: Validate Ingress routes
+            run: |
+              curl -I https://capstone.utibeokon.me/
+              curl -I https://prometheus.utibeokon.me/
+
