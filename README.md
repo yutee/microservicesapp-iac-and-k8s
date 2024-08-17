@@ -105,7 +105,16 @@ DevOps never ends, as software is ever changing and evolving, having implemented
 I will be making certain changes to my manifest files, and I will show how the workflow picks up the change and deploys it to kubernetes and rolls out an update to our hosted application.
 
 __Continous Integration and Continous Deployment__
--show ci/cd demo-
+I will perform a little demo where I will update the domain name of the hosted application. The goal is to confirm that changes made to my configurations can be updated seamlessly by my workflow.
+Before continuing, I wil first go to my dns server and add the new domain name, `sockshop.utibeokon.me` next I will:
+- Edit ingress host with the a new configuration, it is currently `capstone.utibeokon.me`
+    ![screenshot](./images/)
+- Push my code to the `main` branch
+    ![screenshot](./images/)
+- Wait for pipeline to complete
+    ![screenshot](./images/)
+- Visit application via new domain name
+    ![screenshot](./images/)
 
 __Summary__
 In this project, I successfully deployed a microservices-based application on an AKS cluster, leveraging Kubernetes for orchestration and core DevOps practices to ensure high availability. I also setup and proper monitoring system for the cluster and applications running in it. The deployment process, as well as further integrations, were fully automated using Infrasctructure as code, and futher updates have been made provision for using GitHub Actions to streamline the workflow and enable continuous integration and delivery. This approach not only enhanced the reliability and scalability of the application but also laid a solid foundation for future improvements and integrations.

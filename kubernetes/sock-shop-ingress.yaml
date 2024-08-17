@@ -10,11 +10,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - capstone.utibeokon.me
+        - sockshop.utibeokon.me
       secretName: letsencrypt-nginx-htnxv
   ingressClassName: nginx
   rules:
-    - host: capstone.utibeokon.me
+    - host: sockshop.utibeokon.me
       http:
         paths:
           - pathType: Prefix
