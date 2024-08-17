@@ -37,6 +37,13 @@ jobs:
         steps:
         -   name: Checkout code
             uses: actions/checkout@v3
+        
+        -   name: Auth Kubectl
+            uses: azure/aks-set-context@v1
+            with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+                cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+                resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
       
         -   name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
@@ -73,7 +80,7 @@ jobs:
               fi
           
         -   name: Terraform Apply
-            
+            if: ${{ env.exit_code == 2 }}
             working-directory: ./terraform
             run: terraform apply --auto-approve plan.tfplan
 
