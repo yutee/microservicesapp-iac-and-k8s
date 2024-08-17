@@ -76,7 +76,7 @@ jobs:
               exit_code: ${{ env.exit_code }}
 
         -   name: Terraform Apply
-            if: steps.check_plan_status.outcome == 'success' && env.exit_code == '2'
+            
             working-directory: ./terraform
             run: |
               terraform apply --auto-approve plan.tfplan \
