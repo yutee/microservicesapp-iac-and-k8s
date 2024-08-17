@@ -31,7 +31,7 @@ module "aks" {
 
 # not needed for ci/cd processes
 # uncomment line 34 to 37 if you provisioning for the first time or you want to deploy the helm charts
-# module "helm" {
-#   source = "./modules/helm"
-#   depends_on = [ module.aks ]
-# }
+module "helm" {
+  source = "./modules/helm"
+  depends_on = [ module.aks ]
+}

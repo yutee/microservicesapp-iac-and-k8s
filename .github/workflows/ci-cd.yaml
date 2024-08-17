@@ -60,25 +60,20 @@ jobs:
           
         -   name: Check Plan Status
             id: check_plan_status
-            working-directory: ./terraform
             run: |
               echo "Exit code: ${{ env.exit_code }}"
-              
-              # Determine if there are any resources to be destroyed
-              resources_to_destroy=$(terraform show -json plan.tfplan | jq '.resource_changes[] | select(.change.actions | index("delete")) | .address' | wc -l)
-              
-              if [ "${{ env.exit_code }}" -eq 0 ] && [ "$resources_to_destroy" -eq 0 ]; then
+              if [ "${{ env.exit_code }}" -eq 0 ]; then
                 echo "No changes detected. Skipping apply."
                 exit 0
-              elif [ "${{ env.exit_code }}" -eq 2 ] || [ "$resources_to_destroy" -gt 0 ]; then
-                echo "Changes detected or resources to destroy. Proceeding with apply."
+              elif [ "${{ env.exit_code }}" -eq 2 ]; then
+                echo "Changes detected. Proceeding with apply."
               else
                 echo "Error during plan. Exiting."
                 exit 1
               fi
           
         -   name: Terraform Apply
-            if: ${{ env.exit_code == 2 || steps.check_plan_status.outputs.resources_to_destroy != 0 }}
+            
             working-directory: ./terraform
             run: terraform apply --auto-approve plan.tfplan
 
