@@ -23,7 +23,3 @@ output "subnet2_id" {
 output "subnet2_name" {
   value = azurerm_subnet.subnet2.name
 }
-
-output "firewall_name" {
-  value = azurerm_firewall.az_firewall.name
-}
