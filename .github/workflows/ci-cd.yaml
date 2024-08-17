@@ -57,25 +57,23 @@ jobs:
                 -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
                 -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}"
               echo "exit_code=$?" >> $GITHUB_ENV
-
+          
         -   name: Check Plan Status
             id: check_plan_status
             run: |
               echo "Exit code: ${{ env.exit_code }}"
-              if [ "$exit_code" -eq 0 ]; then
+              if [ "${{ env.exit_code }}" -eq 0 ]; then
                 echo "No changes detected. Skipping apply."
                 exit 0
-              elif [ "$exit_code" -eq 2 ]; then
+              elif [ "${{ env.exit_code }}" -eq 2 ]; then
                 echo "Changes detected. Proceeding with apply."
               else
                 echo "Error during plan. Exiting."
                 exit 1
               fi
-            env:
-              exit_code: ${{ env.exit_code }}
-
+          
         -   name: Terraform Apply
-            
+            if: ${{ env.exit_code == 2 }}
             working-directory: ./terraform
             run: terraform apply --auto-approve plan.tfplan
 
