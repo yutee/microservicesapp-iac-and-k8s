@@ -22,4 +22,4 @@ output "subnet2_id" {
 
 output "subnet2_name" {
   value = azurerm_subnet.subnet2.name
-}
+} # End of snippet
