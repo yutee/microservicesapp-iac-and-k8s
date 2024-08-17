@@ -108,13 +108,15 @@ __Continous Integration and Continous Deployment__
 I will perform a little demo where I will update the domain name of the hosted application. The goal is to confirm that changes made to my configurations can be updated seamlessly by my workflow.
 Before continuing, I wil first go to my dns server and add the new domain name, `sockshop.utibeokon.me` next I will:
 - Edit ingress host with the a new configuration, it is currently `capstone.utibeokon.me`
-    ![screenshot](./images/)
+    ![screenshot](./images/demo-changing.png)
 - Push my code to the `main` branch
-    ![screenshot](./images/)
+    ![screenshot](./images/demo-push.png)
 - Wait for pipeline to complete
-    ![screenshot](./images/)
+    ![screenshot](./images/demo-pipelinerun.png)
+- Confirm ingress file change
+    ![screenshot](./images/demo-ingressconfig.png)
 - Visit application via new domain name
-    ![screenshot](./images/)
+    ![screenshot](./images/demo-newurlupdate.png)
 
 __Summary__
 In this project, I successfully deployed a microservices-based application on an AKS cluster, leveraging Kubernetes for orchestration and core DevOps practices to ensure high availability. I also setup and proper monitoring system for the cluster and applications running in it. The deployment process, as well as further integrations, were fully automated using Infrasctructure as code, and futher updates have been made provision for using GitHub Actions to streamline the workflow and enable continuous integration and delivery. This approach not only enhanced the reliability and scalability of the application but also laid a solid foundation for future improvements and integrations.
